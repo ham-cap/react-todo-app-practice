@@ -1,20 +1,22 @@
-function CreateForm(props) {
+function CreateForm (props) {
   return (
     <div>
       <label htmlFor="">
-        TODO:
+        新規登録:
       </label>
-      <input type="text" />
-      <button>Add</button>
+      <form onSubmit={props.addTodo}>
+        <input type="text" />
+        <button type="submit">Add</button>
+      </form>
     </div>
   )
 }
 
-function EditForm(props) {
+function EditForm (props) {
   return (
     <div>
       <label htmlFor="">
-        TODO:
+        更新:
       </label>
       <input type="text" />
       <button>Edit</button>
@@ -22,32 +24,57 @@ function EditForm(props) {
   )
 }
 
-function TodoList(props) {
-  const todos = props.todos;
-  const todoList = todos.map((todo, index) =>
-    <li key={index}>{todo}</li>
-  );
-  return(
-    <ul>{todoList}</ul>
-  )
-}
+// function TodoList (props) {
+//   const todos = props.todos
+//   const todoList = todos.map((todo, index) =>
+//     <li key={index}>{todo}</li>
+//   )
+//   return (
+//     <ul>{todoList}</ul>
+//   )
+// }
 
 class TodoApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {todos: ["hoge", "fuga", "puni", "mohe"]};
+  constructor (props) {
+    super(props)
+    this.addTodo = this.addTodo.bind(this)
+    console.log(this.getTodosFromLocalStrage())
+    const currentTodos = this.getTodosFromLocalStrage()
+    this.state = { todos: currentTodos }
+    console.log(this)
   }
-  render(){
+
+  getTodosFromLocalStrage () {
+    if (Object.prototype.hasOwnProperty.call(localStorage, 'todoList')) {
+      const todoListJson = localStorage.getItem('todoList')
+      const todoList = JSON.parse(todoListJson)
+      return todoList
+    } else {
+      return []
+    }
+  }
+
+  addTodo (e) {
+    e.preventDefault()
+    console.log(e)
+    if (e === '') return
+    const todos = this.state.todos
+    todos.push(e.target[0].value)
+    const json = JSON.stringify(todos, undefined, 0)
+    localStorage.setItem('todoList', json)
+  }
+
+  render () {
     return (
       <div>
-        <CreateForm />
+        <CreateForm addTodo={this.addTodo} />
+        <p>{this.state.todos}</p>
         <EditForm />
-        <TodoList todos={this.state.todos} />
       </div>
     )
   }
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-const element = <TodoApp />;
-root.render(element);
+const root = ReactDOM.createRoot(document.getElementById('root'))
+const element = <TodoApp />
+root.render(element)
