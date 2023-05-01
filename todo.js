@@ -80,14 +80,16 @@ function EditForm (props) {
   )
 }
 
-function TodoList (props) {
-  const todos = props.todos
-  const todoList = todos.map((todo, index) =>
-    <li key={index}>{todo}</li>
-  )
-  return (
+class TodoList extends React.Component {
+  render () {
+    const todos = this.props.todos
+    const todoList = todos.map((todo, index) =>
+      <li key={index}>{todo}</li>
+    )
+    return (
     <ul>{todoList}</ul>
-  )
+    )
+  }
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
