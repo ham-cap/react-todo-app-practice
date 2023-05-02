@@ -7,6 +7,7 @@ class TodoApp extends React.Component {
     this.handleChangeEdit = this.handleChangeEdit.bind(this)
     this.addTodo = this.addTodo.bind(this)
     this.updateTodo = this.updateTodo.bind(this)
+    this.destroyTodo = this.destroyTodo.bind(this)
   }
 
   handleChange (text) {
@@ -49,6 +50,13 @@ class TodoApp extends React.Component {
     // this.setState({ newTodo: '' })
   }
 
+  destroyTodo (index) {
+    const currentTodos = this.state.todos
+    currentTodos.splice(index, 1)
+    localStorage.setItem('todoList', JSON.stringify(currentTodos))
+    this.setState({ todos: currentTodos })
+  }
+
   render () {
     return (
       <div>
@@ -56,7 +64,7 @@ class TodoApp extends React.Component {
         <p>TodoAppの中からのnewTodo: {this.state.newTodo}</p>
         <EditForm changedTodo={this.state.changedTodo} onTodoChange={this.handleChangeEdit} updateTodo={this.updateTodo} />
         <p>TodoAppの中からのchangedTodo: {this.state.changedTodo}</p>
-        <TodoList todos={this.state.todos}/>
+        <TodoList todos={this.state.todos} deleteTodo={(index) => this.destroyTodo(index)} deletedTodoIndex={this.deletedTodoIndex} />
       </div>
     )
   }
@@ -112,7 +120,10 @@ class TodoList extends React.Component {
   render () {
     const todos = this.props.todos
     const todoList = todos.map((todo, index) =>
-      <li key={index}>{todo}</li>
+      <li key={index}>
+        {todo}
+        <button onClick={() => this.props.deleteTodo(index)}>Delete</button>
+      </li>
     )
     return (
     <ul>{todoList}</ul>
