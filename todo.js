@@ -52,7 +52,7 @@ class TodoApp extends React.Component {
     todos.splice(index, 1, this.state.selectedTodoForEdit);
     const json = JSON.stringify(todos, undefined, 0);
     localStorage.setItem("todoList", json);
-    this.setState({ selectedTodoForEdit: "" , isChanging: false});
+    this.setState({ selectedTodoForEdit: "", isChanging: false });
   }
 
   destroyTodo(index) {
@@ -70,9 +70,9 @@ class TodoApp extends React.Component {
     });
   }
 
-  cancelEdit(){
+  cancelEdit() {
     this.setState({
-      isChanging: false
+      isChanging: false,
     });
   }
 
@@ -126,7 +126,6 @@ class FormSwitcher extends React.Component {
   }
 }
 
-
 class CreateForm extends React.Component {
   constructor(props) {
     super(props);
@@ -140,7 +139,7 @@ class CreateForm extends React.Component {
   render() {
     return (
       <div>
-        <label htmlFor="">新規登録:</label>
+        <label>新規登録:</label>
         <input
           type="text"
           value={this.props.newTodo}
@@ -167,7 +166,7 @@ class EditForm extends React.Component {
   render() {
     return (
       <div>
-        <label htmlFor="">更新:</label>
+        <label>編集:</label>
         <input
           type="text"
           value={this.props.selectedTodo}
@@ -179,7 +178,9 @@ class EditForm extends React.Component {
         >
           Update
         </button>
-        <button type="button" onClick={this.props.cancelEdit}>Cancel</button>
+        <button type="button" onClick={this.props.cancelEdit}>
+          Cancel
+        </button>
       </div>
     );
   }
