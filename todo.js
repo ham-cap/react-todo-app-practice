@@ -16,6 +16,7 @@ class TodoApp extends React.Component {
     this.updateTodo = this.updateTodo.bind(this);
     this.destroyTodo = this.destroyTodo.bind(this);
     this.changeForm = this.changeForm.bind(this);
+    this.cancelEdit = this.cancelEdit.bind(this);
   }
 
   handleChange(text) {
@@ -52,7 +53,7 @@ class TodoApp extends React.Component {
     todos.splice(index, 1, this.state.selectedTodoForEdit);
     const json = JSON.stringify(todos, undefined, 0);
     localStorage.setItem("todoList", json);
-    this.setState({ selectedTodoForEdit: "" });
+    this.setState({ selectedTodoForEdit: "" , isChanging: false});
   }
 
   destroyTodo(index) {
@@ -70,6 +71,12 @@ class TodoApp extends React.Component {
     });
   }
 
+  cancelEdit(){
+    this.setState({
+      isChanging: false
+    });
+  }
+
   render() {
     return (
       <div>
@@ -82,6 +89,7 @@ class TodoApp extends React.Component {
           index={this.state.selectedTodoIndexForEdit}
           handleChangeEdit={this.handleChangeEdit}
           updateTodo={this.updateTodo}
+          cancelEdit={this.cancelEdit}
         />
         <TodoList
           todos={this.state.todos}
@@ -145,6 +153,7 @@ class EditForm extends React.Component {
         >
           Update
         </button>
+        <button type="button" onClick={this.props.cancelEdit}>Cancel</button>
       </div>
     );
   }
@@ -174,6 +183,7 @@ class FormSwitcher extends React.Component {
           index={this.props.index}
           onTodoChange={this.props.handleChangeEdit}
           updateTodo={this.props.updateTodo}
+          cancelEdit={this.props.cancelEdit}
         />
       );
     } else {
