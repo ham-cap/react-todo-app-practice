@@ -4,7 +4,6 @@ class TodoApp extends React.Component {
     const currentTodos = this.getTodosFromLocalStrage();
     this.state = {
       newTodo: "",
-      changedTodo: "",
       todos: currentTodos,
       isChanging: false,
       selectedTodoForEdit: "",
@@ -101,6 +100,33 @@ class TodoApp extends React.Component {
   }
 }
 
+class FormSwitcher extends React.Component {
+  render() {
+    let form;
+    if (this.props.isChanging) {
+      form = (
+        <EditForm
+          selectedTodo={this.props.selectedTodo}
+          index={this.props.index}
+          onTodoChange={this.props.handleChangeEdit}
+          updateTodo={this.props.updateTodo}
+          cancelEdit={this.props.cancelEdit}
+        />
+      );
+    } else {
+      form = (
+        <CreateForm
+          newTodo={this.props.newTodo}
+          onNewTodoChange={this.props.onNewTodoChange}
+          addTodo={this.props.addTodo}
+        />
+      );
+    }
+    return <div>{form}</div>;
+  }
+}
+
+
 class CreateForm extends React.Component {
   constructor(props) {
     super(props);
@@ -170,32 +196,6 @@ class TodoList extends React.Component {
       </li>
     ));
     return <ul>{todoList}</ul>;
-  }
-}
-
-class FormSwitcher extends React.Component {
-  render() {
-    let form;
-    if (this.props.isChanging) {
-      form = (
-        <EditForm
-          selectedTodo={this.props.selectedTodo}
-          index={this.props.index}
-          onTodoChange={this.props.handleChangeEdit}
-          updateTodo={this.props.updateTodo}
-          cancelEdit={this.props.cancelEdit}
-        />
-      );
-    } else {
-      form = (
-        <CreateForm
-          newTodo={this.props.newTodo}
-          onNewTodoChange={this.props.onNewTodoChange}
-          addTodo={this.props.addTodo}
-        />
-      );
-    }
-    return <div>{form}</div>;
   }
 }
 
