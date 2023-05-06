@@ -47,9 +47,6 @@ class TodoApp extends React.Component {
   }
 
   updateTodo(index) {
-    console.log("update!!!!");
-    console.log(index);
-    // e.preventDefault()
     if (this.state.selectedTodoForEdit === "") return;
     const todos = this.state.todos;
     todos.splice(index, 1, this.state.selectedTodoForEdit);
@@ -76,22 +73,10 @@ class TodoApp extends React.Component {
   render() {
     return (
       <div>
-        <CreateForm
+        <FormSwitcher
           newTodo={this.state.newTodo}
           onNewTodoChange={this.handleChange}
           addTodo={this.addTodo}
-        />
-        <p>TodoAppの中からのnewTodo: {this.state.newTodo}</p>
-        <EditForm
-          changedTodo={this.state.changedTodo}
-          onTodoChange={this.handleChangeEdit}
-          updateTodo={this.updateTodo}
-        />
-        <p>
-          TodoAppのrender関数内でstate.selectedTodoForEditを呼んだ場合：
-          {this.state.selectedTodoForEdit}
-        </p>
-        <FormSwitcher
           isChanging={this.state.isChanging}
           selectedTodo={this.state.selectedTodoForEdit}
           index={this.state.selectedTodoIndexForEdit}
@@ -142,8 +127,6 @@ class EditForm extends React.Component {
   }
 
   handleChange(e) {
-    console.log(this);
-    console.log(e.target.value);
     this.props.onTodoChange(e.target.value);
   }
 
@@ -162,7 +145,6 @@ class EditForm extends React.Component {
         >
           Update
         </button>
-        <p>selectedTodo: {this.props.selectedTodo}</p>
       </div>
     );
   }
@@ -194,14 +176,14 @@ class FormSwitcher extends React.Component {
           updateTodo={this.props.updateTodo}
         />
       );
-      console.log(
-        `FormSwitcherの中で参照したselectedTodo: ${this.props.selectedTodo}`
-      );
-      console.log(
-        `FormSwitcherの中で参照したselectedindex: ${this.props.index}`
-      );
     } else {
-      form = <CreateForm />;
+      form = (
+        <CreateForm
+          newTodo={this.props.newTodo}
+          onNewTodoChange={this.props.onNewTodoChange}
+          addTodo={this.props.addTodo}
+        />
+      );
     }
     return <div>{form}</div>;
   }
