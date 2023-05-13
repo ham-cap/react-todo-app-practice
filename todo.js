@@ -1,10 +1,9 @@
 class TodoApp extends React.Component {
   constructor(props) {
     super(props);
-    const currentTodos = this.getTodosFromLocalStrage();
     this.state = {
       newTodo: "",
-      todos: currentTodos,
+      todos: [],
       isChanging: false,
       selectedTodoForEdit: "",
       selectedTodoIndexForEdit: "",
@@ -18,6 +17,11 @@ class TodoApp extends React.Component {
     this.cancelEdit = this.cancelEdit.bind(this);
   }
 
+  componentDidMount() {
+    const currentTodos = this.getTodosFromLocalStrage();
+    this.setState({todos: currentTodos});
+  }
+
   handleChange(text) {
     this.setState({ newTodo: text });
   }
@@ -27,12 +31,12 @@ class TodoApp extends React.Component {
   }
 
   getTodosFromLocalStrage() {
-    if (Object.prototype.hasOwnProperty.call(localStorage, "todoList")) {
+    if (localStorage.getItem("todoList") === null) {
+      return [];
+    } else {
       const todoListJson = localStorage.getItem("todoList");
       const todoList = JSON.parse(todoListJson);
       return todoList;
-    } else {
-      return [];
     }
   }
 
