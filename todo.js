@@ -31,10 +31,10 @@ class TodoApp extends React.Component {
   }
 
   getTodosFromLocalStrage() {
-    if (localStorage.getItem("todoList") === null) {
+    const todoListJson = localStorage.getItem("todoList");
+    if (todoListJson === null) {
       return [];
     } else {
-      const todoListJson = localStorage.getItem("todoList");
       const todoList = JSON.parse(todoListJson);
       return todoList;
     }
